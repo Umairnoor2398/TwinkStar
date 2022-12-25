@@ -4,6 +4,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 import 'package:twinkstar/services/auth_services.dart';
 import 'package:twinkstar/services/firestore_services.dart';
+import 'package:twinkstar/services/storage_services.dart';
 
 class TwinksScreen extends StatefulWidget {
   const TwinksScreen({super.key});
@@ -99,9 +100,30 @@ class _TwinksScreenState extends State<TwinksScreen> {
                         children: [
                           const Divider(height: 5.0),
                           ListTile(
-                            leading: const CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  'https://th.bing.com/th/id/R.99f56d50336ace161eea6e544ec238c9?rik=ZSuE%2fnwfAiTQig&pid=ImgRaw&r=0'),
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.black,
+                              child: FutureBuilder(
+                                future: StorageService().downloadUrl(
+                                    'profile_images', '${docSnapshot['user']}'),
+                                builder: ((BuildContext context,
+                                    AsyncSnapshot<String> snapshot) {
+                                  if (snapshot.connectionState ==
+                                          ConnectionState.done &&
+                                      snapshot.hasData) {
+                                    return CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      backgroundImage:
+                                          NetworkImage(snapshot.data!),
+                                    );
+                                  }
+                                  if (snapshot.connectionState ==
+                                          ConnectionState.waiting ||
+                                      snapshot.hasData) {
+                                    return const CircularProgressIndicator();
+                                  }
+                                  return const CircularProgressIndicator();
+                                }),
+                              ),
                             ),
                             title: Column(
                               children: [
@@ -259,96 +281,99 @@ class _TwinksScreenState extends State<TwinksScreen> {
         return Column(
           children: [
             const Divider(height: 5.0),
-            ListTile(
-              leading: const CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://th.bing.com/th/id/R.99f56d50336ace161eea6e544ec238c9?rik=ZSuE%2fnwfAiTQig&pid=ImgRaw&r=0'),
-              ),
-              title: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            docSnapshot['username'].toString(),
-                            style: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '@${docSnapshot['email'].toString()}',
-                            style: const TextStyle(
-                                fontSize: 13,
-                                fontStyle: FontStyle.normal,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        timeago.format(docSnapshot['time'].toDate()),
-                        style: const TextStyle(
-                            fontSize: 13,
-                            fontStyle: FontStyle.normal,
-                            color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              subtitle: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  Text(
-                    docSnapshot['twink'].toString().trim(),
-                    overflow: TextOverflow.clip,
-                    maxLines: null,
-                  ),
-                  //Adding Image if possible
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                              onPressed: () {
-                                // update(docSnapshot, 'likes',1);
-                              },
-                              icon: const Icon(Icons.favorite_border)),
-                          Text(
-                            docSnapshot['likes'].toString().trim(),
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                              onPressed: () {
-                                // update(docSnapshot, 'saved',1);
-                              },
-                              icon: const Icon(Icons.bookmark_border)),
-                          Text(
-                            docSnapshot['saved'].toString().trim(),
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            twinkListTile(docSnapshot),
           ],
         );
       }),
+    );
+  }
+
+  ListTile twinkListTile(DocumentSnapshot<Object?> docSnapshot) {
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(docSnapshot['user']),
+      ),
+      title: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    docSnapshot['username'].toString(),
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    '@${docSnapshot['email'].toString()}',
+                    style: const TextStyle(
+                        fontSize: 13,
+                        fontStyle: FontStyle.normal,
+                        color: Colors.grey),
+                  ),
+                ],
+              ),
+              Text(
+                timeago.format(docSnapshot['time'].toDate()),
+                style: const TextStyle(
+                    fontSize: 13,
+                    fontStyle: FontStyle.normal,
+                    color: Colors.grey),
+              ),
+            ],
+          ),
+        ],
+      ),
+      subtitle: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 10),
+          Text(
+            docSnapshot['twink'].toString().trim(),
+            overflow: TextOverflow.clip,
+            maxLines: null,
+          ),
+          //Adding Image if possible
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        // update(docSnapshot, 'likes',1);
+                      },
+                      icon: const Icon(Icons.favorite_border)),
+                  Text(
+                    docSnapshot['likes'].toString().trim(),
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        // update(docSnapshot, 'saved',1);
+                      },
+                      icon: const Icon(Icons.bookmark_border)),
+                  Text(
+                    docSnapshot['saved'].toString().trim(),
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

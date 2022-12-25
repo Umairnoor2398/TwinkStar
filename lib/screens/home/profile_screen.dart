@@ -1,6 +1,9 @@
 // ignore_for_file: unused_local_variable, prefer_typing_uninitialized_variables
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:twinkstar/services/auth_services.dart';
 import 'package:twinkstar/services/firestore_services.dart';
@@ -22,6 +25,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<File> changePicture() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowMultiple: false,
+      allowedExtensions: ['png'],
+    );
+
+    return File(result!.files.first.path!);
   }
 
   @override
@@ -96,37 +109,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
                           child: CircleAvatar(
-                            backgroundColor: Colors.black,
+                            backgroundColor: Colors.white,
                             radius: 45,
-                            child: CircleAvatar(
-                              radius: 43,
-                              backgroundColor: Colors.white,
-                              child: FutureBuilder(
-                                future: StorageService().downloadUrl(
-                                    'profile_images',
-                                    '${data['profileImage']}'),
-                                builder: ((BuildContext context,
-                                    AsyncSnapshot<String> snapshot) {
-                                  if (snapshot.connectionState ==
-                                          ConnectionState.done &&
-                                      snapshot.hasData) {
-                                    return SizedBox(
-                                      width: 75,
-                                      height: 75,
-                                      child: Image.network(
-                                        snapshot.data!,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    );
-                                  }
-                                  if (snapshot.connectionState ==
-                                          ConnectionState.waiting ||
-                                      snapshot.hasData) {
-                                    return const CircularProgressIndicator();
-                                  }
+                            child: FutureBuilder(
+                              future: StorageService().downloadUrl(
+                                  'profile_images', '${data['profileImage']}'),
+                              builder: ((BuildContext context,
+                                  AsyncSnapshot<String> snapshot) {
+                                if (snapshot.connectionState ==
+                                        ConnectionState.done &&
+                                    snapshot.hasData) {
+                                  return CircleAvatar(
+                                    radius: 43,
+                                    backgroundColor: Colors.white,
+                                    backgroundImage:
+                                        NetworkImage(snapshot.data!),
+                                  );
+                                }
+                                if (snapshot.connectionState ==
+                                        ConnectionState.waiting ||
+                                    snapshot.hasData) {
                                   return const CircularProgressIndicator();
-                                }),
-                              ),
+                                }
+                                return const CircularProgressIndicator();
+                              }),
                             ),
                           ),
                         ),
@@ -140,6 +146,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     context: context,
                                     builder: ((context) {
                                       return Container(
+                                        height: MediaQuery.of(context)
+                                                .copyWith()
+                                                .size
+                                                .height *
+                                            0.30,
                                         decoration: const BoxDecoration(
                                           color: Colors.white,
                                           borderRadius: BorderRadius.only(
@@ -154,17 +165,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             CustomizedLoginSignupButton(
                                               buttonText:
                                                   'Change Profile Picture',
-                                              onPressed: () {},
+                                              onPressed: () async {
+                                                var file =
+                                                    await changePicture();
+
+                                                StorageService().uploadFile(
+                                                    file.path,
+                                                    'profile_images');
+                                              },
                                               buttonColor: Colors.blue,
                                               textColor: Colors.white,
                                             ),
                                             const SizedBox(
-                                              height: 50,
+                                              height: 20,
                                             ),
                                             CustomizedLoginSignupButton(
                                               buttonText:
                                                   'Change Cover Picture',
-                                              onPressed: () {},
+                                              onPressed: () async {
+                                                var file =
+                                                    await changePicture();
+
+                                                StorageService().uploadFile(
+                                                    file.path, 'cover_images');
+                                              },
                                               buttonColor: Colors.blue,
                                               textColor: Colors.white,
                                             ),

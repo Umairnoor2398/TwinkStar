@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:twinkstar/services/firestore_services.dart';
 import 'package:twinkstar/services/auth_services.dart';
+import 'package:twinkstar/services/storage_services.dart';
 
 class UserTwinksScreen extends StatefulWidget {
   final String? userUid;
@@ -89,9 +90,30 @@ class _UserTwinksScreenState extends State<UserTwinksScreen> {
                         children: [
                           const Divider(height: 5.0),
                           ListTile(
-                            leading: const CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  'https://th.bing.com/th/id/R.99f56d50336ace161eea6e544ec238c9?rik=ZSuE%2fnwfAiTQig&pid=ImgRaw&r=0'),
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.black,
+                              child: FutureBuilder(
+                                future: StorageService().downloadUrl(
+                                    'profile_images', '${docSnapshot['user']}'),
+                                builder: ((BuildContext context,
+                                    AsyncSnapshot<String> snapshot) {
+                                  if (snapshot.connectionState ==
+                                          ConnectionState.done &&
+                                      snapshot.hasData) {
+                                    return CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      backgroundImage:
+                                          NetworkImage(snapshot.data!),
+                                    );
+                                  }
+                                  if (snapshot.connectionState ==
+                                          ConnectionState.waiting ||
+                                      snapshot.hasData) {
+                                    return const CircularProgressIndicator();
+                                  }
+                                  return const CircularProgressIndicator();
+                                }),
+                              ),
                             ),
                             title: Column(
                               children: [
