@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "653987777396",
+    "project_id": "twinkstar-9efcb",
+    "storage_bucket": "twinkstar-9efcb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653987777396:android:b9f7a69d524c7627f1ba21",
+        "android_client_info": {
+          "package_name": "com.example.twinkstar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "653987777396-t1cu5q1ta9ojjv6rtnlrld3c59q90r26.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlNb7moNLW3SBhjWHqQ8bQZPevG4qpxCI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "653987777396-t1cu5q1ta9ojjv6rtnlrld3c59q90r26.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
