@@ -1,3 +1,7 @@
+// ignore_for_file: dead_code
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:twinkstar/utils/utils.dart';
 import 'package:twinkstar/screens/welcome/login_screen.dart';
@@ -8,6 +12,13 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Timer(
+      const Duration(seconds: 3),
+      () {
+        // loginBottomSheet(context);
+      },
+    );
+    // return const OnboardingPageState();
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -21,7 +32,7 @@ class WelcomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             // SizedBox(height: 100,child: Image.asset('assets/images/logo_dark.png')),
-            CustomizedLoginSignupButton(
+            CustomizedButton(
                 buttonText: 'LOG IN',
                 buttonColor: Colors.black,
                 textColor: Colors.white,
@@ -32,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
                           builder: (context) => const LoginScreen()));
                 }),
             const SizedBox(height: 10),
-            CustomizedLoginSignupButton(
+            CustomizedButton(
                 buttonText: 'SIGN UP',
                 buttonColor: Colors.white,
                 textColor: Colors.black,
@@ -42,6 +53,7 @@ class WelcomeScreen extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => const SignUpScreen()));
                 }),
+            const SizedBox(height: 30),
           ],
         ),
       ),

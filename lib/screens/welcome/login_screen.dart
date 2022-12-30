@@ -1,6 +1,5 @@
 // ignore_for_file: unused_local_variable, use_build_context_synchronously
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:twinkstar/data_classes/userDL.dart';
@@ -10,6 +9,7 @@ import 'package:twinkstar/screens/welcome/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:twinkstar/services/auth_services.dart';
 import 'package:twinkstar/utils/utils.dart';
+import 'package:twinkstar/extensions/custom_theme_extension.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -46,7 +46,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 50,
                         width: 50,
                         decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black, width: 1),
+                            border: Border.all(
+                                color: context.theme.borderColor!, width: 1),
                             borderRadius: BorderRadius.circular(10)),
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios_new_sharp),
@@ -56,12 +57,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     )),
-                const Padding(
-                  padding: EdgeInsets.all(10.0),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
                   child: Text(
                     'Welcome Back! Glad\nto see you, Again!',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: context.theme.textColor!,
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
@@ -91,13 +92,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: const Text(
                           "Forgot Password?",
-                          style: TextStyle(color: Color(0xff6a707c)),
+                          style: TextStyle(color: Color(0xff35c2c1)),
                         )),
                   ),
                 ),
                 loading
                     ? const Center(child: CircularProgressIndicator())
-                    : CustomizedLoginSignupButton(
+                    : CustomizedButton(
                         buttonText: 'LOG IN',
                         buttonColor: Colors.black,
                         textColor: Colors.white,
@@ -180,32 +181,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                       googleLoading = false;
                                     });
                                   }),
-                            twitterLoading
-                                ? const CircularProgressIndicator()
-                                : SignInButton(Buttons.Twitter,
-                                    text: 'Continue With Twitter',
-                                    onPressed: () async {
-                                    setState(() {
-                                      twitterLoading = true;
-                                    });
-                                    User? user =
-                                        await AuthService().signInWithTwitter();
-                                    if (user != null) {
-                                      UserInfoDL.GetUserInfo(AuthService()
-                                          .firebaseAuth
-                                          .currentUser!
-                                          .email);
-                                      Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const HomeUIScreen()),
-                                          (route) => false);
-                                    }
-                                    setState(() {
-                                      twitterLoading = false;
-                                    });
-                                  }),
                             githubLoading
                                 ? const CircularProgressIndicator()
                                 : SignInButton(Buttons.GitHub,
@@ -244,10 +219,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     // crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const Text(
+                      Text(
                         "Don't have an Account?",
-                        style:
-                            TextStyle(fontSize: 15, color: Color(0xff1e232c)),
+                        style: TextStyle(
+                            fontSize: 15, color: context.theme.textColor!),
                       ),
                       TextButton(
                           onPressed: () {

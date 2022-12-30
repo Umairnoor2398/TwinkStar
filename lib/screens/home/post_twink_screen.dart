@@ -43,31 +43,39 @@ class _CreateTwinkScreenState extends State<CreateTwinkScreen> {
               List<dynamic> twinks = data['twinks'];
               return Column(
                 children: [
-                  const SizedBox(height: 20),
-                  Text('UserName: ${data['username']}'),
-                  Text('Email: ${data['email']}'),
-                  Text('Twinks: ${twinks.length}'),
+                  // const SizedBox(height: 20),
+                  // Text('UserName: ${data['username']}'),
+                  // Text('Email: ${data['email']}'),
+                  // Text('Twinks: ${twinks.length}'),
                   CustomTextField(
                       isPassword: false,
                       controller: twinkController,
                       hintText: 'Create Post',
                       inputAction: TextInputAction.newline,
                       keyboardType: TextInputType.multiline),
-                  CustomizedLoginSignupButton(
+                  CustomizedButton(
                       buttonText: 'Twink',
                       buttonColor: Colors.black,
                       textColor: Colors.white,
                       onPressed: () async {
-                        int idx = twinks.length;
-                        String uid =
-                            '${FirebaseAuth.instance.currentUser!.email}-${idx + 1}';
-                        Toast.showToast(uid, Colors.blue);
+                        if (data['profileImage'] != 'user.png') {
+                          Toast.showToast(
+                              'You must upload a profile picture first in order to post a twink',
+                              Colors.red);
+                        } else {
+                          int idx = twinks.length;
+                          String uid =
+                              '${FirebaseAuth.instance.currentUser!.email}-${idx + 1}';
+                          Toast.showToast(uid, Colors.blue);
 
-                        FireStoreService().addTwink(
-                            twinkController.text.trim(), uid, data['username']);
-                        setState(() {
-                          twinkController.text = '';
-                        });
+                          FireStoreService().addTwink(
+                              twinkController.text.trim(),
+                              uid,
+                              data['username']);
+                          setState(() {
+                            twinkController.text = '';
+                          });
+                        }
                       }),
                 ],
               );

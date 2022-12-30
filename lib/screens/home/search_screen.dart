@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:twinkstar/screens/home/user_profile.dart';
 import 'package:twinkstar/services/auth_services.dart';
 import 'package:twinkstar/services/firestore_services.dart';
-import 'package:twinkstar/services/storage_services.dart';
+import 'package:twinkstar/utils/profile_image.dart';
 import 'package:twinkstar/utils/utils.dart';
+import 'package:twinkstar/extensions/custom_theme_extension.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -104,32 +105,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                       twinks,
                                       following);
                                 },
-                                leading: FutureBuilder(
-                                  future: StorageService().downloadUrl(
-                                      'profile_images',
-                                      '${docSnapshot['profileImage']}'),
-                                  builder: ((BuildContext context,
-                                      AsyncSnapshot<String> snapshot) {
-                                    if (snapshot.connectionState ==
-                                            ConnectionState.done &&
-                                        snapshot.hasData) {
-                                      return SizedBox(
-                                        width: 50,
-                                        height: 50,
-                                        child: Image.network(
-                                          snapshot.data!,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      );
-                                    }
-                                    if (snapshot.connectionState ==
-                                            ConnectionState.waiting ||
-                                        snapshot.hasData) {
-                                      return const CircularProgressIndicator();
-                                    }
-                                    return const CircularProgressIndicator();
-                                  }),
-                                ),
+                                leading: ProfilePicture(
+                                    imgName: docSnapshot['profileImage'],
+                                    radius: 25),
                                 title: Text(docSnapshot['username']),
                                 subtitle: Text(
                                   docSnapshot['email'],
@@ -177,40 +155,6 @@ class _SearchScreenState extends State<SearchScreen> {
       },
     );
   }
-  //                         //     return Container(
-  //                         //       decoration: BoxDecoration(
-  //                         //         shape: BoxShape.circle,
-  //                         //         color: Colors.white,
-  //                         //         // border: Border.all(color: Colors.blue, width: 5),
-  //                         //       ),
-  //                         //       height: 50,
-  //                         //       width: 50,
-  //                         //       child: ClipRRect(
-  //                         //         borderRadius:
-  //                         //             BorderRadius.all(Radius.circular(50)),
-  //                         //         child: Image(
-  //                         //           image: NetworkImage(
-  //                         //               'https://th.bing.com/th/id/R.99f56d50336ace161eea6e544ec238c9?rik=ZSuE%2fnwfAiTQig&pid=ImgRaw&r=0'),
-  //                         //           fit: BoxFit.cover,
-  //                         //           loadingBuilder:
-  //                         //               (context, child, loadingProgress) {
-  //                         //             if (loadingProgress == null) {
-  //                         //               return child;
-  //                         //             }
-  //                         //             return Center(
-  //                         //                 child: CircularProgressIndicator());
-  //                         //           },
-  //                         //           errorBuilder: (context, object, error) {
-  //                         //             return Container(
-  //                         //               child: Icon(Icons.error,
-  //                         //                   color: Colors.red),
-  //                         //             );
-  //                         //           },
-  //                         //         ),
-  //                         //       ),
-  //                         //     );
-  //                         //   },
-  //                         // ),
 
   Future<dynamic> userMiniProfileBottomSheet(
       BuildContext context,
@@ -234,9 +178,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height / 2.1,
-                    decoration: const BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                      color: context.theme.bottomSheetColor!,
+                      borderRadius: const BorderRadius.only(
                         topRight: Radius.circular(50),
                         topLeft: Radius.circular(50),
                       ),
@@ -249,30 +193,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: CircleAvatar(
                     radius: 70,
                     backgroundColor: Colors.white,
-                    child: FutureBuilder(
-                      future: StorageService().downloadUrl(
-                          'profile_images', '${docSnapshot['profileImage']}'),
-                      builder: ((BuildContext context,
-                          AsyncSnapshot<String> snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done &&
-                            snapshot.hasData) {
-                          return SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: Image.network(
-                              snapshot.data!,
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        }
-                        if (snapshot.connectionState ==
-                                ConnectionState.waiting ||
-                            snapshot.hasData) {
-                          return const CircularProgressIndicator();
-                        }
-                        return const CircularProgressIndicator();
-                      }),
-                    ),
+                    child: ProfilePicture(
+                        imgName: docSnapshot['profileImage'], radius: 65),
                   ),
                 ),
                 // Display Username
@@ -342,6 +264,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: Center(
                       child: Text(
                         "See ${docSnapshot['username']}'s Twinks ",
+                        style: const TextStyle(color: Colors.black),
                       ),
                     ),
                   ),

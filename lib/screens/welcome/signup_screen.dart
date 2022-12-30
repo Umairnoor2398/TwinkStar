@@ -1,16 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:twinkstar/data_classes/userDL.dart';
 import 'package:twinkstar/screens/home/home_screen.dart';
 import 'package:twinkstar/screens/welcome/login_screen.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twinkstar/services/auth_services.dart';
 import 'package:twinkstar/services/firestore_services.dart';
 import 'package:twinkstar/utils/utils.dart';
+import 'package:twinkstar/extensions/custom_theme_extension.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -49,7 +48,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         height: 50,
                         width: 50,
                         decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black, width: 1),
+                            border: Border.all(
+                                color: context.theme.borderColor!, width: 1),
                             borderRadius: BorderRadius.circular(10)),
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios_new_sharp),
@@ -59,12 +59,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     )),
-                const Padding(
-                  padding: EdgeInsets.all(10.0),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
                   child: Text(
                     'Hello Register to get Started',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: context.theme.textColor!,
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
@@ -95,8 +95,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     isPassword: true,
                     keyboardType: TextInputType.visiblePassword),
                 loading
-                    ? const CircularProgressIndicator()
-                    : CustomizedLoginSignupButton(
+                    ? const Center(child: CircularProgressIndicator())
+                    : CustomizedButton(
                         buttonText: 'Register',
                         buttonColor: Colors.black,
                         textColor: Colors.white,
@@ -194,35 +194,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       }
                                     }
                                   }),
-                            twitterLoading
-                                ? const CircularProgressIndicator()
-                                : SignInButton(Buttons.Twitter,
-                                    text: 'Continue With Twitter',
-                                    onPressed: () async {
-                                    setState(() {
-                                      twitterLoading = true;
-                                    });
-                                    User? user =
-                                        await AuthService().signInWithTwitter();
-                                    if (user != null) {
-                                      UserInfoDL.GetUserInfo(AuthService()
-                                          .firebaseAuth
-                                          .currentUser!
-                                          .email);
-                                      if (await FireStoreService()
-                                          .addUserBySocialLinkage(user)) {
-                                        Navigator.pushAndRemoveUntil(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const HomeUIScreen()),
-                                            (route) => false);
-                                      }
-                                    }
-                                    setState(() {
-                                      twitterLoading = false;
-                                    });
-                                  }),
                             githubLoading
                                 ? const CircularProgressIndicator()
                                 : SignInButton(Buttons.GitHub,
@@ -262,10 +233,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "Already have an Account?",
-                        style:
-                            TextStyle(fontSize: 15, color: Color(0xff1e232c)),
+                        style: TextStyle(
+                            fontSize: 15, color: context.theme.textColor!),
                       ),
                       TextButton(
                           onPressed: () {

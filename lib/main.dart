@@ -8,6 +8,9 @@ import 'package:twinkstar/screens/welcome/welcome_screen.dart';
 import 'package:twinkstar/screens/welcome/login_screen.dart';
 import 'package:twinkstar/screens/welcome/signup_screen.dart';
 
+import 'theme/dark_theme.dart';
+import 'theme/light_theme.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -25,14 +28,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'TwinkStar',
       debugShowCheckedModeBanner: false,
+      theme: lightTheme(),
+      darkTheme: darkTheme(),
       themeMode: ThemeMode.system,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      darkTheme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      // home: SplashScreen(),
       routes: {
         '/': (context) => SplashScreen(),
         '/splash': (context) => SplashScreen(),

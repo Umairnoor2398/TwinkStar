@@ -1,3 +1,5 @@
+// ignore_for_file: no_logic_in_create_state
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:twinkstar/screens/welcome/login_screen.dart';
@@ -15,12 +17,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   TextEditingController emailController = TextEditingController();
 
   _ForgotPasswordState(this.emailController);
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +74,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     isPassword: false,
                     keyboardType: TextInputType.emailAddress),
                 const SizedBox(height: 30),
-                CustomizedLoginSignupButton(
+                CustomizedButton(
                     buttonText: 'Send Code',
                     buttonColor: Colors.black,
                     textColor: Colors.white,
@@ -88,56 +84,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           .then((value) {
                         Toast.showToast(
                             'Check Your Email to Reset Password', Colors.blue);
-                        // Navigator.push(context, MaterialPageRoute(builder: (context)=>OTPScreen(emailController: emailController)));
                       }).onError((error, stackTrace) {
                         Toast.showToast(error.toString(), Colors.red);
                       });
-                      // EmailSend email=new EmailSend();
-                      // email.sendEmail();
-                      // email.SendEmail(emailController.text, 'body', emailController.text);
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (context)=> CupertinoAlertDialog(
-                      //     title: new Text("Dialog Title"),
-                      //     content: new Text("Your Password has been emailed at your own email Address"),
-                      //     actions: <Widget>[
-                      //       CupertinoDialogAction(
-                      //         onPressed: (){
-                      //           Navigator.of(context).pop();
-                      //         },
-                      //         isDefaultAction: true,
-                      //         child: Text("Okh"),
-                      //       ),
-                      //       // CupertinoDialogAction(
-                      //       //   child: Text("No"),
-                      //       // )
-                      //     ],
-                      //   ),
-                      // builder: (context) => AlertDialog(
-                      //   title: const Text("Forgot Password"),
-                      //   content: const Text("Your Password has been emailed at your own email Address"),
-                      //   actions: <Widget>[
-                      //     TextButton(
-                      //       onPressed: () {
-                      //         Navigator.of(context).pop();
-                      //
-                      //       },
-                      //       child: Container(
-                      //         // color: Colors.green,
-                      //         padding: const EdgeInsets.all(14),
-                      //         child: const Text("okay"),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-
-                      // );
-                      // Navigator.push(context, MaterialPageRoute(builder: (context)=>OTPScreen(emailController: emailController,)));
                     }),
                 SingleChildScrollView(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    // crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       const Text(
                         "Remember Password?",

@@ -1,10 +1,13 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 import 'package:twinkstar/services/auth_services.dart';
 import 'package:twinkstar/services/firestore_services.dart';
-import 'package:twinkstar/services/storage_services.dart';
+import 'package:twinkstar/utils/profile_image.dart';
+import 'package:twinkstar/extensions/custom_theme_extension.dart';
 
 class TwinksScreen extends StatefulWidget {
   const TwinksScreen({super.key});
@@ -18,7 +21,6 @@ class _TwinksScreenState extends State<TwinksScreen> {
       FirebaseFirestore.instance.collection('Twinks');
 
   late Stream<QuerySnapshot> twinks;
-  late var user;
   List<IconData> likedIcons = [];
   List<IconData> savedIcons = [];
 
@@ -26,17 +28,13 @@ class _TwinksScreenState extends State<TwinksScreen> {
   void initState() {
     super.initState();
     twinks = refTwinks.snapshots();
-    user = FireStoreService()
-        .refUsers
-        .doc(AuthService().firebaseAuth.currentUser!.uid)
-        .get();
   }
 
   @override
   Widget build(BuildContext context) {
     // return Container();
     return LiquidPullToRefresh(
-      color: Colors.blue,
+      color: context.theme.liquidRefresh,
       backgroundColor: Colors.white,
       borderWidth: 2,
       springAnimationDurationInMilliseconds: 1000,
@@ -100,31 +98,8 @@ class _TwinksScreenState extends State<TwinksScreen> {
                         children: [
                           const Divider(height: 5.0),
                           ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.black,
-                              child: FutureBuilder(
-                                future: StorageService().downloadUrl(
-                                    'profile_images', '${docSnapshot['user']}'),
-                                builder: ((BuildContext context,
-                                    AsyncSnapshot<String> snapshot) {
-                                  if (snapshot.connectionState ==
-                                          ConnectionState.done &&
-                                      snapshot.hasData) {
-                                    return CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      backgroundImage:
-                                          NetworkImage(snapshot.data!),
-                                    );
-                                  }
-                                  if (snapshot.connectionState ==
-                                          ConnectionState.waiting ||
-                                      snapshot.hasData) {
-                                    return const CircularProgressIndicator();
-                                  }
-                                  return const CircularProgressIndicator();
-                                }),
-                              ),
-                            ),
+                            leading: ProfilePicture(
+                                imgName: docSnapshot['user'], radius: 19),
                             title: Column(
                               children: [
                                 Row(

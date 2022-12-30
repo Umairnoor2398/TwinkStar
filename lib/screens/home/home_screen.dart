@@ -10,6 +10,7 @@ import 'package:twinkstar/screens/home/twinks_screen.dart';
 import 'package:twinkstar/screens/welcome/welcome_screen.dart';
 import 'package:twinkstar/services/auth_services.dart';
 import 'package:twinkstar/utils/utils.dart';
+import 'package:twinkstar/extensions/custom_theme_extension.dart';
 
 class HomeUIScreen extends StatefulWidget {
   const HomeUIScreen({Key? key}) : super(key: key);
@@ -37,7 +38,7 @@ class _HomeUIScreenState extends State<HomeUIScreen> {
       borderRadius: 24.0,
       showShadow: true,
       drawerShadowsBackgroundColor: Colors.grey[300]!,
-      menuBackgroundColor: Colors.blue,
+      menuBackgroundColor: context.theme.drawerColor!,
     );
   }
 }
@@ -138,7 +139,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: context.theme.drawerColor!,
       body: Theme(
         data: ThemeData.dark(),
         child: Column(

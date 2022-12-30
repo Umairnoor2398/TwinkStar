@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:twinkstar/services/auth_services.dart';
 import 'package:twinkstar/services/firestore_services.dart';
 import 'package:twinkstar/services/storage_services.dart';
+import 'package:twinkstar/utils/profile_image.dart';
 import 'package:twinkstar/utils/utils.dart';
+import 'package:twinkstar/extensions/custom_theme_extension.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String? uid;
@@ -19,14 +21,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late String cImage =
-      'https://th.bing.com/th/id/OIP.ocS9ZrZ36t4esy0IV2Rc3AHaCv?pid=ImgDet&rs=1';
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   Future<File> changePicture() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -81,7 +75,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         AsyncSnapshot<String> snapshot) {
                       if (snapshot.connectionState == ConnectionState.done &&
                           snapshot.hasData) {
-                        return SizedBox(
+                        return Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(25)),
+                          ),
                           child: Image.network(
                             snapshot.data!,
                             fit: BoxFit.cover,
@@ -109,31 +106,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
                           child: CircleAvatar(
-                            backgroundColor: Colors.white,
+                            backgroundColor: Colors.black,
                             radius: 45,
-                            child: FutureBuilder(
-                              future: StorageService().downloadUrl(
-                                  'profile_images', '${data['profileImage']}'),
-                              builder: ((BuildContext context,
-                                  AsyncSnapshot<String> snapshot) {
-                                if (snapshot.connectionState ==
-                                        ConnectionState.done &&
-                                    snapshot.hasData) {
-                                  return CircleAvatar(
-                                    radius: 43,
-                                    backgroundColor: Colors.white,
-                                    backgroundImage:
-                                        NetworkImage(snapshot.data!),
-                                  );
-                                }
-                                if (snapshot.connectionState ==
-                                        ConnectionState.waiting ||
-                                    snapshot.hasData) {
-                                  return const CircularProgressIndicator();
-                                }
-                                return const CircularProgressIndicator();
-                              }),
-                            ),
+                            child: ProfilePicture(
+                                imgName: data['profileImage'], radius: 44),
                           ),
                         ),
                         SizedBox(
@@ -142,7 +118,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: ElevatedButton(
                                 onPressed: () {
                                   showModalBottomSheet(
-                                    backgroundColor: Colors.transparent,
+                                    backgroundColor:
+                                        context.theme.bottomSheetColor2,
                                     context: context,
                                     builder: ((context) {
                                       return Container(
@@ -151,9 +128,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 .size
                                                 .height *
                                             0.30,
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
+                                        decoration: BoxDecoration(
+                                          color:
+                                              context.theme.bottomSheetColor2,
+                                          borderRadius: const BorderRadius.only(
                                             topRight: Radius.circular(50),
                                             topLeft: Radius.circular(50),
                                           ),
@@ -162,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            CustomizedLoginSignupButton(
+                                            CustomizedButton(
                                               buttonText:
                                                   'Change Profile Picture',
                                               onPressed: () async {
@@ -173,13 +151,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     file.path,
                                                     'profile_images');
                                               },
-                                              buttonColor: Colors.blue,
+                                              buttonColor:
+                                                  context.theme.liquidRefresh,
                                               textColor: Colors.white,
                                             ),
                                             const SizedBox(
                                               height: 20,
                                             ),
-                                            CustomizedLoginSignupButton(
+                                            CustomizedButton(
                                               buttonText:
                                                   'Change Cover Picture',
                                               onPressed: () async {
@@ -189,7 +168,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 StorageService().uploadFile(
                                                     file.path, 'cover_images');
                                               },
-                                              buttonColor: Colors.blue,
+                                              buttonColor:
+                                                  context.theme.liquidRefresh,
                                               textColor: Colors.white,
                                             ),
                                           ],

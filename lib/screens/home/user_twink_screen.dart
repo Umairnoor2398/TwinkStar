@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:twinkstar/services/firestore_services.dart';
 import 'package:twinkstar/services/auth_services.dart';
-import 'package:twinkstar/services/storage_services.dart';
+import 'package:twinkstar/utils/profile_image.dart';
 
 class UserTwinksScreen extends StatefulWidget {
   final String? userUid;
@@ -92,28 +92,8 @@ class _UserTwinksScreenState extends State<UserTwinksScreen> {
                           ListTile(
                             leading: CircleAvatar(
                               backgroundColor: Colors.black,
-                              child: FutureBuilder(
-                                future: StorageService().downloadUrl(
-                                    'profile_images', '${docSnapshot['user']}'),
-                                builder: ((BuildContext context,
-                                    AsyncSnapshot<String> snapshot) {
-                                  if (snapshot.connectionState ==
-                                          ConnectionState.done &&
-                                      snapshot.hasData) {
-                                    return CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      backgroundImage:
-                                          NetworkImage(snapshot.data!),
-                                    );
-                                  }
-                                  if (snapshot.connectionState ==
-                                          ConnectionState.waiting ||
-                                      snapshot.hasData) {
-                                    return const CircularProgressIndicator();
-                                  }
-                                  return const CircularProgressIndicator();
-                                }),
-                              ),
+                              child: ProfilePicture(
+                                  imgName: docSnapshot['user'], radius: 19),
                             ),
                             title: Column(
                               children: [
@@ -260,19 +240,5 @@ class _UserTwinksScreenState extends State<UserTwinksScreen> {
         }),
       ),
     );
-  }
-}
-
-class TwinksSection extends StatefulWidget {
-  const TwinksSection({super.key});
-
-  @override
-  State<TwinksSection> createState() => _TwinksSectionState();
-}
-
-class _TwinksSectionState extends State<TwinksSection> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

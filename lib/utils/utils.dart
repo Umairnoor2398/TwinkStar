@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:twinkstar/extensions/custom_theme_extension.dart';
 
-class CustomizedLoginSignupButton extends StatelessWidget {
+class CustomizedButton extends StatelessWidget {
   final String? buttonText;
   final Color? buttonColor;
   final VoidCallback? onPressed;
   final Color? textColor;
-  const CustomizedLoginSignupButton(
+  const CustomizedButton(
       {Key? key,
       this.buttonText,
       this.buttonColor,
@@ -70,6 +71,9 @@ class _CustomizedTextFieldState extends State<CustomizedTextField> {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: TextField(
+        style: TextStyle(
+          color: context.theme.textFieldColor,
+        ),
         keyboardType: widget.keyboardType,
         enableSuggestions: !widget.isPassword,
         autocorrect: !widget.isPassword,
@@ -87,6 +91,9 @@ class _CustomizedTextFieldState extends State<CustomizedTextField> {
           fillColor: const Color(0xffe8ecf4),
           filled: true,
           hintText: widget.hintText,
+          hintStyle: TextStyle(
+            color: context.theme.textFieldColor,
+          ),
           suffixIcon: widget.isPassword
               ? IconButton(
                   onPressed: () {
@@ -150,8 +157,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
       padding: const EdgeInsets.all(10.0),
       child: TextField(
         maxLines: null,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 18,
+          color: context.theme.textFieldColor,
         ),
         textInputAction: widget.inputAction,
         keyboardType: widget.keyboardType,
@@ -171,6 +179,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
           fillColor: const Color(0xffe8ecf4),
           filled: true,
           hintText: widget.hintText,
+          hintStyle: TextStyle(
+            color: context.theme.textFieldColor,
+          ),
           suffixIcon: widget.isPassword
               ? IconButton(
                   onPressed: () {
