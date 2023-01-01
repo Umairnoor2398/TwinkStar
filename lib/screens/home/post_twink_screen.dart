@@ -39,14 +39,9 @@ class _CreateTwinkScreenState extends State<CreateTwinkScreen> {
             if (snapshot.connectionState == ConnectionState.done) {
               Map<String, dynamic> data =
                   snapshot.data!.data() as Map<String, dynamic>;
-              // Map<String,dynamic> twinks=data['twinks'];
               List<dynamic> twinks = data['twinks'];
               return Column(
                 children: [
-                  // const SizedBox(height: 20),
-                  // Text('UserName: ${data['username']}'),
-                  // Text('Email: ${data['email']}'),
-                  // Text('Twinks: ${twinks.length}'),
                   CustomTextField(
                       isPassword: false,
                       controller: twinkController,
@@ -58,7 +53,7 @@ class _CreateTwinkScreenState extends State<CreateTwinkScreen> {
                       buttonColor: Colors.black,
                       textColor: Colors.white,
                       onPressed: () async {
-                        if (data['profileImage'] != 'user.png') {
+                        if (data['profileImage'] == 'user.png') {
                           Toast.showToast(
                               'You must upload a profile picture first in order to post a twink',
                               Colors.red);
@@ -66,7 +61,6 @@ class _CreateTwinkScreenState extends State<CreateTwinkScreen> {
                           int idx = twinks.length;
                           String uid =
                               '${FirebaseAuth.instance.currentUser!.email}-${idx + 1}';
-                          Toast.showToast(uid, Colors.blue);
 
                           FireStoreService().addTwink(
                               twinkController.text.trim(),

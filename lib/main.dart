@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:twinkstar/screens/welcome/splash_screen.dart';
@@ -7,7 +5,6 @@ import 'firebase_options.dart';
 import 'package:twinkstar/screens/welcome/welcome_screen.dart';
 import 'package:twinkstar/screens/welcome/login_screen.dart';
 import 'package:twinkstar/screens/welcome/signup_screen.dart';
-
 import 'theme/dark_theme.dart';
 import 'theme/light_theme.dart';
 
@@ -32,11 +29,11 @@ class MyApp extends StatelessWidget {
       darkTheme: darkTheme(),
       themeMode: ThemeMode.system,
       routes: {
-        '/': (context) => SplashScreen(),
-        '/splash': (context) => SplashScreen(),
-        '/welcome': (context) => WelcomeScreen(),
-        '/login': (context) => LoginScreen(),
-        '/signup': (context) => SignUpScreen(),
+        '/': (context) => const SplashScreen(),
+        '/splash': (context) => const SplashScreen(),
+        '/welcome': (context) => const WelcomeScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/signup': (context) => const SignUpScreen(),
       },
     );
   }

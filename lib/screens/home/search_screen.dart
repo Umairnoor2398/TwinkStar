@@ -1,5 +1,3 @@
-// ignore_for_file: unused_local_variable, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:twinkstar/screens/home/user_profile.dart';
@@ -19,7 +17,6 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   String followBtnText = 'Follow';
   List<String> followBtnTXT = [];
-  // final Storage storage = new Storage();
   TextEditingController nameController = TextEditingController();
   late var currUser;
   late var users;
@@ -187,7 +184,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ),
                 ),
-                //Circular Avarat
+                //Circular Avatar
                 Positioned(
                   top: 14,
                   child: CircleAvatar(
@@ -212,12 +209,14 @@ class _SearchScreenState extends State<SearchScreen> {
                 // Display Email
                 Positioned(
                   top: MediaQuery.of(context).size.height / 4.3,
-                  child: Text(
-                    docSnapshot['email'],
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
+                  child: Chip(
+                    label: Text(
+                      docSnapshot['email'],
+                      style: TextStyle(
+                        color: context.theme.textColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                 ),
@@ -230,15 +229,11 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        BottomSheetItem(
-                            title: 'Followers',
-                            subtitle: followers.length.toString()),
-                        BottomSheetItem(
-                            title: 'Twinks',
-                            subtitle: twinks.length.toString()),
-                        BottomSheetItem(
-                            title: 'Following',
-                            subtitle: following.length.toString()),
+                        bottomSheetItem(
+                            'Followers', followers.length.toString()),
+                        bottomSheetItem('Twinks', twinks.length.toString()),
+                        bottomSheetItem(
+                            'Following', following.length.toString()),
                       ],
                     ),
                   ),
@@ -251,7 +246,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => User_ProfileScreen(
+                              builder: (context) => UserProfileScreen(
                                     uid: docSnapshot.id,
                                   )));
                     },
@@ -274,19 +269,8 @@ class _SearchScreenState extends State<SearchScreen> {
           );
         }));
   }
-}
 
-class BottomSheetItem extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  const BottomSheetItem({
-    Key? key,
-    required this.title,
-    required this.subtitle,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget bottomSheetItem(String title, String subtitle) {
     return SizedBox(
       width: MediaQuery.of(context).size.width / 5,
       height: MediaQuery.of(context).size.height / 10,
@@ -295,19 +279,21 @@ class BottomSheetItem extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 14,
+            style: TextStyle(
+              color: context.theme.textColor,
+              fontSize: 15,
               fontWeight: FontWeight.w400,
             ),
           ),
           const SizedBox(height: 5),
-          Text(
-            subtitle,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
+          Chip(
+            label: Text(
+              subtitle,
+              style: TextStyle(
+                color: context.theme.textColor,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],

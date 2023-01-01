@@ -1,5 +1,3 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -30,9 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ? const HomeUIScreen()
           : const OnboardingPageState(),
       splashIconSize: 500,
-      duration: 6000,
-      // splashTransition: SplashTransition.fadeTransition,
-      // pageTransitionType: PageTransitionType.size,
+      duration: 3000,
     );
   }
 }

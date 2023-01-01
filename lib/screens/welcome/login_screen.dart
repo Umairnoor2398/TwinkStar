@@ -20,7 +20,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool googleLoading = false;
-  bool twitterLoading = false;
   bool githubLoading = false;
   bool loading = false;
 
@@ -122,8 +121,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             loading = true;
                           });
                         }),
-
-                // SizedBox(height: 20),
                 SingleChildScrollView(
                   child: Column(
                     children: [
@@ -213,11 +210,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-
                 SingleChildScrollView(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    // crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
                         "Don't have an Account?",

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:twinkstar/screens/welcome/login_screen.dart';
+import 'package:twinkstar/screens/welcome/onboarding_content.dart';
 import 'package:twinkstar/screens/welcome/signup_screen.dart';
 import 'package:twinkstar/utils/utils.dart';
 import 'package:twinkstar/extensions/custom_theme_extension.dart';
@@ -165,12 +165,6 @@ class _OnboardingPageStateState extends State<OnboardingPageState> {
                                       ),
                                     );
                                   }));
-                          // : Navigator.pushAndRemoveUntil(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) =>
-                          //             const WelcomeScreen()),
-                          //     (route) => false);
                         },
                         style: ElevatedButton.styleFrom(
                             shape: const CircleBorder()),
@@ -185,41 +179,6 @@ class _OnboardingPageStateState extends State<OnboardingPageState> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class OnBoardingContent extends StatelessWidget {
-  final String lottieAsset, title, description;
-  const OnBoardingContent({
-    Key? key,
-    required this.lottieAsset,
-    required this.title,
-    required this.description,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Spacer(),
-        LottieBuilder.asset(lottieAsset),
-        const Spacer(),
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .headline5!
-              .copyWith(fontWeight: FontWeight.w500),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          description,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 30),
-      ],
     );
   }
 }

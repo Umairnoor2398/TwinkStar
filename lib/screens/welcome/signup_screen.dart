@@ -20,7 +20,6 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool googleLoading = false;
-  bool twitterLoading = false;
   bool githubLoading = false;
   bool loading = false;
 
@@ -109,8 +108,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               if (passwordValidation(
                                   passwordController.text.trim(),
                                   confirmPasswordController.text.trim())) {
-                                //
-
                                 User? user = await AuthService().register(
                                     emailController.text.trim(),
                                     passwordController.text.trim());
@@ -193,6 +190,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             (route) => false);
                                       }
                                     }
+                                    setState(() {
+                                      googleLoading = false;
+                                    });
                                   }),
                             githubLoading
                                 ? const CircularProgressIndicator()

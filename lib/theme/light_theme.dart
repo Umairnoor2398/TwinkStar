@@ -10,7 +10,6 @@ ThemeData lightTheme() {
     extensions: [
       CustomThemeExtension.lightMode,
     ],
-    // colorScheme: const ColorScheme.light(),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
       backgroundColor: Coloors.lightButtonColor,

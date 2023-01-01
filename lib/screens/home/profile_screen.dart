@@ -1,7 +1,4 @@
-// ignore_for_file: unused_local_variable, prefer_typing_uninitialized_variables
-
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -98,18 +95,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 transform: Matrix4.translationValues(0.0, -40.0, 0.0),
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black,
-                            radius: 45,
-                            child: ProfilePicture(
-                                imgName: data['profileImage'], radius: 44),
+                        const SizedBox(width: 50),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.black,
+                              radius: 45,
+                              child: ProfilePicture(
+                                  imgName: data['profileImage'], radius: 44),
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -178,7 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     }),
                                   );
                                 },
-                                child: const Text('Edit Picture')),
+                                child: const Icon(Icons.camera_alt_rounded)),
                           ),
                         ),
                       ],
@@ -194,17 +194,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Colors.grey),
                     ),
                     const SizedBox(height: 10),
-                    Text('Twinks: ${twinks.length}',
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 10),
-                    Text('Following: ${following.length}',
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 10),
-                    Text('Followers: ${followers.length}',
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    Chip(
+                      label: Text('Twinks: ${twinks.length}',
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Chip(
+                          label: Text('Following: ${following.length}',
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold)),
+                        ),
+                        Chip(
+                          label: Text('Followers: ${followers.length}',
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

@@ -214,7 +214,6 @@ class Toast {
   static void showToast(String message, Color bgColor) {
     Fluttertoast.showToast(
         msg: message,
-        // toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: bgColor,

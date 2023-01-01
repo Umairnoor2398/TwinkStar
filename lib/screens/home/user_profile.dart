@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:twinkstar/screens/home/user_twink_screen.dart';
 
-class User_ProfileScreen extends StatefulWidget {
+class UserProfileScreen extends StatefulWidget {
   final String? uid;
-  const User_ProfileScreen({super.key, this.uid});
+  const UserProfileScreen({super.key, this.uid});
 
   @override
-  State<User_ProfileScreen> createState() => _User_ProfileScreenState();
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class _User_ProfileScreenState extends State<User_ProfileScreen> {
+class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

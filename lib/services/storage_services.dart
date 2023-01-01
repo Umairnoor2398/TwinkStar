@@ -36,17 +36,6 @@ class StorageService extends GetxService {
     }
   }
 
-  Future<firebase_storage.ListResult> listFiles() async {
-    firebase_storage.ListResult result =
-        await storage.ref('Profile Images').listAll();
-
-    result.items.forEach((firebase_storage.Reference ref) {
-      Toast.showToast(ref.toString(), Colors.blue);
-    });
-
-    return result;
-  }
-
   Future<String> downloadUrl(String folderName, String ImageName) async {
     String downloadURL =
         await storage.ref('$folderName/$ImageName').getDownloadURL();

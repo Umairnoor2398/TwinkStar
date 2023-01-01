@@ -10,7 +10,6 @@ ThemeData darkTheme() {
     extensions: [
       CustomThemeExtension.darkMode,
     ],
-    // colorScheme: const ColorScheme.dark(),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
       backgroundColor: Coloors.darkButtonColor,
